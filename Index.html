@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CoachCRM · CRM para entrenador personal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0B2545;--blue:#185FA5;--sky:#8DB8E8;--pale:#E6F1FB;--bg:#F3F6FA;--card:#fff;--tx:#0F1B2D;--mu:#5B6B80;--bd:#DCE4EE;color-scheme:light}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0C1320;--card:#131C2B;--tx:#E8EEF7;--mu:#9AA8BD;--bd:#27344A;--pale:#17304F;--blue:#8DB8E8;color-scheme:dark}}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;font:14px/1.5 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--tx);padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+#app{display:flex;min-height:100%}
+nav{width:224px;flex-shrink:0;background:var(--navy);color:#fff;padding:20px 12px;display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+.logo{display:flex;align-items:center;gap:10px;padding:0 8px 22px}
+.logo b{display:block;font-weight:500;font-size:16px;line-height:1.2}.logo small{color:var(--sky);font-size:12px}
+.mk{width:32px;height:32px;border-radius:8px;background:var(--sky);color:var(--navy);display:grid;place-items:center;flex-shrink:0}
+nav a{display:flex;align-items:center;gap:12px;height:40px;padding:0 10px;border-radius:8px;color:#B5D4F4;text-decoration:none;margin-bottom:2px;line-height:1}
+nav a svg{flex-shrink:0;display:block}nav a:hover{background:rgba(141,184,232,.1)}
+nav a.on{background:rgba(141,184,232,.2);color:#fff}
+nav .sp{flex:1}nav button{background:none;border:0;color:#8DB8E8;font:inherit;font-size:12px;text-align:left;padding:8px 10px;cursor:pointer}
+main{flex:1;min-width:0;padding:26px 30px;max-width:1160px}
+h1{font-size:22px;font-weight:500;margin:0}h2{font-size:15px;font-weight:500;margin:0 0 10px}h3{font-weight:500;margin:0 0 12px;font-size:16px}
+.hd{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:18px;flex-wrap:wrap}
+.mu{color:var(--mu)}.sm{font-size:12px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px 18px}
+.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:14px}
+.g2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:14px;align-items:start}
+.kpi{cursor:pointer;text-align:left;font:inherit;color:inherit}.kpi span{font-size:13px;color:var(--mu)}
+.kpi b{display:block;font-size:30px;font-weight:500;line-height:1.2;margin:2px 0}
+.kpi.hl{background:var(--pale);border-color:var(--sky)}.kpi.hl span,.kpi.hl b{color:var(--blue)}
+.bars{display:flex;align-items:flex-end;gap:12px;height:150px;padding-top:18px}
+.bars div{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;font-size:11px}
+.bars i{display:block;width:100%;background:#B5D4F4;border-radius:4px 4px 0 0;margin-top:3px;min-height:2px}.bars div:last-child i{background:var(--navy)}
+.lbl{display:flex;gap:12px;font-size:12px;color:var(--mu);text-align:center;margin-top:5px}.lbl span{flex:1}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--bd)}.row:first-of-type{border-top:0}
+.bg{display:inline-block;font-size:12px;padding:2px 9px;border-radius:10px;background:var(--pale);color:#0C447C;margin:1px 0 1px 4px;white-space:nowrap}
+.bg.w{background:#FAEEDA;color:#633806}.bg.r{background:#FCEBEB;color:#791F1F}.bg.g{background:#E1F5EE;color:#085041}.bg.n{background:#EEF1F5;color:#444}
+.btn{font:inherit;font-size:13px;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:8px;padding:7px 12px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{border-color:var(--sky)}.btn.pri{background:var(--navy);border-color:var(--navy);color:#fff}.btn.dan{color:#A32D2D}.btn.xs{padding:3px 9px;font-size:12px}
+:focus-visible{outline:2px solid var(--sky);outline-offset:2px}
+.tb{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;align-items:center}
+.in,input,select,textarea{font:inherit;border:1px solid var(--bd);border-radius:8px;padding:8px 10px;background:var(--card);color:var(--tx);width:100%}
+.tb input{max-width:320px}
+.chip{font:inherit;font-size:12px;border:0;background:var(--bd);color:var(--tx);border-radius:14px;padding:4px 12px;cursor:pointer}.chip.on{background:var(--navy);color:#fff}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse}
+th{font-weight:400;font-size:12px;color:var(--mu);text-align:left;padding:7px 8px;border-bottom:1px solid var(--bd);white-space:nowrap}
+td{padding:9px 8px;border-bottom:1px solid var(--bd);vertical-align:middle}
+tr[data-act=sel]{cursor:pointer}tr[data-act=sel]:hover td{background:var(--bg)}tr.on td{background:var(--pale)}
+.ac{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+.tabs{display:flex;gap:16px;border-bottom:1px solid var(--bd);margin:12px 0}
+.tabs button{font:inherit;background:none;border:0;border-bottom:2px solid transparent;padding:6px 0;color:var(--mu);cursor:pointer}.tabs button.on{border-color:var(--navy);color:var(--tx);font-weight:500}
+.dl{display:grid;grid-template-columns:150px 1fr;gap:6px 10px;font-size:13px;margin:0}.dl dt{color:var(--mu)}.dl dd{margin:0}
+.av{width:42px;height:42px;border-radius:50%;background:var(--pale);color:var(--blue);display:grid;place-items:center;font-weight:500;flex-shrink:0}
+.tl{border-left:2px solid #B5D4F4;margin:0;padding:0 0 0 12px;list-style:none}.tl li{padding:5px 0;font-size:13px}
+.tk{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px solid var(--bd)}.tk input{width:18px;height:18px;margin-top:2px;flex-shrink:0}.done{text-decoration:line-through;color:var(--mu)}
+dialog{border:1px solid var(--bd);border-radius:14px;padding:22px;width:min(440px,92vw);background:var(--card);color:var(--tx)}
+dialog::backdrop{background:rgba(11,37,69,.55)}
+label{display:block;font-size:13px;margin-bottom:12px}.err{color:#A32D2D;font-size:12px;display:block;min-height:0}
+label.ck{display:flex;gap:8px;align-items:center}label.ck input{width:auto}
+.acts{display:flex;justify-content:flex-end;gap:8px;margin-top:6px}
+.empty{padding:26px 8px;text-align:center;color:var(--mu)}
+@media(max-width:860px){.g2{grid-template-columns:1fr}}
+@media(max-width:760px){#app{flex-direction:column}
+nav{width:100%;height:auto;position:sticky;top:0;z-index:5;flex-direction:row;align-items:center;gap:4px;overflow-x:auto;padding:8px 10px;padding-top:max(8px,env(safe-area-inset-top,0px))}
+.logo,nav .sp,nav button{display:none}nav a{padding:0 12px;white-space:nowrap;margin:0;flex-shrink:0}main{padding:18px 14px}.dl{grid-template-columns:120px 1fr}}
+</style>
+</head>
+<body>
+<div id="app"><nav id="nav" aria-label="Navegación principal"></nav><main id="main"></main></div>
+<dialog id="dlg"></dialog>
+<script>
+/* CoachCRM · datos ficticios. Todo es inventado; las fechas se calculan respecto a hoy. */
+const HOY = new Date(); HOY.setHours(0, 0, 0, 0);
+const iso = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+const off = n => { const d = new Date(HOY); d.setDate(d.getDate() + n); return iso(d); };
+// Fecha dentro del mes de hace m meses; en el mes actual nunca pasa de hoy.
+const mesAtras = (m, dia) => {
+  const d = new Date(HOY.getFullYear(), HOY.getMonth() - m, 1);
+  let x = Math.min(dia, new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate());
+  if (m === 0) x = Math.min(x, HOY.getDate());
+  d.setDate(x); return iso(d);
+};
+
+// Catálogo de servicios (precios de la demo)
+const CAT = {
+  sesion: { n: 'Sesión individual', tipo: 'Sesión suelta', ses: 1, p: 40 },
+  bono5: { n: 'Bono 5 sesiones', tipo: 'Bono', ses: 5, p: 180 },
+  bono10: { n: 'Bono 10 sesiones', tipo: 'Bono', ses: 10, p: 340 },
+  plan8: { n: 'Plan mensual 8 sesiones', tipo: 'Plan mensual', ses: 8, p: 260 },
+  plan12: { n: 'Plan mensual 12 sesiones', tipo: 'Plan mensual', ses: 12, p: 360 }
+};
+
+// nombre, apellidos, estado, plan, sesiones usadas, días sin entrenar, caducidad (días desde hoy),
+// próxima sesión (días), meses desde el último pago, nº de pagos, último pago pendiente, alta (días), observaciones
+const R = [
+  ['Laura', 'Gómez', 'activo', 'plan8', 5, 3, 12, 2, 0, 4, 0, -280, 'Objetivo: tonificar. Prefiere sesiones de tarde.'],
+  ['Daniel', 'Ortega', 'activo', 'bono5', 3, 4, 40, 3, 0, 2, 0, -150, 'Objetivo: mejorar resistencia.'],
+  ['Marta', 'Ruiz', 'activo', 'bono10', 5, 6, 60, 1, 0, 3, 1, -200, 'Recordar el pago del bono de este mes.'],
+  ['Iván', 'Castro', 'activo', 'plan12', 9, 2, 5, 1, 0, 5, 0, -320, 'Prefiere entrenar por las mañanas.'],
+  ['Carla', 'Méndez', 'activo', 'plan8', 2, 16, 18, null, 0, 2, 0, -90, 'Viaje de trabajo; retomará pronto.'],
+  ['Javier', 'Prieto', 'activo', 'bono10', 9, 2, 25, 2, 1, 3, 0, -240, 'Objetivo: ganar fuerza.'],
+  ['Elena', 'Vidal', 'activo', 'plan12', 4, 1, 20, 1, 0, 6, 0, -400, 'Entrena con mucha regularidad.'],
+  ['Rubén', 'Santos', 'activo', 'bono5', 5, 3, 6, null, 1, 2, 0, -130, 'Bono agotado; pendiente de renovar.'],
+  ['Natalia', 'Cruz', 'activo', 'plan8', 6, 2, 9, 4, 0, 3, 1, -170, ''],
+  ['Andrés', 'Molina', 'activo', 'sesion', 1, 5, null, null, 0, 3, 0, -110, 'Paga por sesiones sueltas.'],
+  ['Lucía', 'Ferrer', 'activo', 'plan8', 1, 7, 22, 2, 0, 1, 0, -35, 'Cliente nueva.'],
+  ['Óscar', 'Blanco', 'activo', 'bono10', 4, 9, 45, 5, 2, 2, 0, -100, ''],
+  ['Pablo', 'Navarro', 'inactivo', 'bono5', 5, 38, -20, null, 2, 2, 0, -260, ''],
+  ['Sara', 'Iglesias', 'inactivo', 'plan8', 3, 52, -35, null, 3, 3, 1, -310, 'Pago pendiente del último plan.'],
+  ['Hugo', 'Serrano', 'inactivo', 'bono10', 8, 29, 3, null, 1, 2, 0, -220, ''],
+  ['Claudia', 'Rey', 'inactivo', 'plan12', 6, 61, -50, null, 5, 4, 0, -380, ''],
+  ['Álvaro', 'Peña', 'potencial', '', 0, 0, null, null, 0, 0, 0, -4, 'Llegó por formulario web.'],
+  ['Irene', 'Soler', 'potencial', '', 0, 0, null, null, 0, 0, 0, -6, 'Contactó por WhatsApp.'],
+  ['Tomás', 'Gil', 'potencial', '', 0, 0, null, null, 0, 0, 0, -12, 'Pidió información de bonos.'],
+  ['Beatriz', 'Núñez', 'potencial', '', 0, 0, null, null, 0, 0, 0, -2, 'Llegó por formulario web.']
+];
+// cliente, días, tipo, texto
+const EV = [
+  [1, -2, 'contacto', 'WhatsApp: pide cambiar el horario del jueves'], [2, -15, 'obs', 'Objetivo: mejorar resistencia'],
+  [3, -4, 'contacto', 'Llamada: confirma que pagará esta semana'], [5, -9, 'contacto', 'WhatsApp: avisa de un viaje, retomará pronto'],
+  [8, -20, 'renovacion', 'Renovación de bono de 5 sesiones'], [11, -12, 'renovacion', 'Renovación de plan mensual 8 sesiones'],
+  [13, -30, 'contacto', 'Email: sin respuesta tras el recordatorio'], [17, -1, 'contacto', 'Formulario web: solicita información de planes'],
+  [18, -2, 'contacto', 'WhatsApp: pregunta precios de bonos'], [19, -6, 'contacto', 'Llamada: pide información, aún no decide'],
+  [20, -1, 'contacto', 'Formulario web: quiere probar una sesión']
+];
+// cliente, descripción, días, estado
+const TA = [
+  [17, 'Llamar para ofrecer una sesión de prueba', 1, 'pendiente'], [18, 'Responder consulta de WhatsApp sobre planes', 0, 'pendiente'],
+  [19, 'Enviar información de bonos', -3, 'completada'], [20, 'Llamar tras el formulario web', 2, 'pendiente'],
+  [13, 'Llamar para reactivar el entrenamiento', 1, 'pendiente'], [3, 'Recordar el pago pendiente por WhatsApp', 0, 'pendiente'],
+  [4, 'Proponer la renovación del plan', 2, 'pendiente'], [1, 'Revisar el progreso del mes', -2, 'completada']
+];
+
+function seedData() {
+  const S = { v: 1, sig: 1000, clientes: [], sesiones: [], pagos: [], eventos: [], tareas: [] };
+  const id = () => ++S.sig;
+  R.forEach((r, i) => {
+    const [nombre, apellidos, estado, plan, usadas, sin, cad, prox, mes, nPag, pend, alta, obs] = r, cid = i + 1, p = CAT[plan];
+    const norm = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    S.clientes.push({ id: cid, nombre, apellidos, tel: '6000000' + String(cid).padStart(2, '0'), email: `${norm(nombre)}.${norm(apellidos)}@example.com`,
+      alta: off(alta), estado, plan, total: p ? p.ses : 0, usadas, caduca: cad === null ? '' : off(cad), obs });
+    for (let k = 0; k < usadas; k++) S.sesiones.push({ id: id(), cid, fecha: off(-(sin + 3 * k)), estado: 'realizada' });
+    if (prox !== null) S.sesiones.push({ id: id(), cid, fecha: off(prox), estado: 'programada' });
+    for (let k = 0; k < nPag; k++) S.pagos.push({ id: id(), cid, concepto: p.n, importe: p.p, fecha: mesAtras(mes + k, 5 + (cid * 3) % 20), estado: pend && k === 0 ? 'pendiente' : 'pagado' });
+  });
+  EV.forEach(([cid, d, tipo, texto]) => S.eventos.push({ id: id(), cid, fecha: off(d), tipo, texto }));
+  TA.forEach(([cid, desc, d, estado]) => S.tareas.push({ id: id(), cid, desc, fecha: off(d), estado }));
+  return S;
+}
+</script>
+<script>
+/* CoachCRM · lógica. Datos en S (se guardan en localStorage); todo lo que se muestra se calcula desde S. */
+(() => {
+const KEY = 'coachcrm_v1', $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const eur = n => Number(n).toLocaleString('es-ES', { style: 'currency', currency: 'EUR', minimumFractionDigits: 0, maximumFractionDigits: 2 });
+const fmt = i => i ? i.split('-').reverse().join('/') : '—';
+const dias = i => Math.round((new Date(i + 'T00:00:00') - HOY) / 864e5);
+const norm = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+let S; try { S = JSON.parse(localStorage.getItem(KEY)); } catch (e) {}
+if (!S || !S.clientes) S = seedData();
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
+const nid = () => ++S.sig, ui = { q: '', f: 'todos', sel: null, tab: 'datos', pf: 'todos', tf: 'pendiente' };
+const ESTADOS = ['activo', 'inactivo', 'potencial'];
+
+// ---------- Cálculos (única fuente de verdad) ----------
+const C = id => S.clientes.find(c => c.id === id);
+const nom = c => `${c.nombre} ${c.apellidos}`;
+const disp = c => c.plan ? Math.max(0, c.total - c.usadas) : 0;
+const ses = (c, e) => S.sesiones.filter(s => s.cid === c.id && s.estado === e).map(s => s.fecha).sort();
+const ultima = c => ses(c, 'realizada').pop() || '';
+const prox = c => ses(c, 'programada').find(f => f >= iso(HOY)) || '';
+const sinEntrenar = c => c.estado === 'potencial' ? null : -dias(ultima(c) || c.alta);
+const pagosDe = c => S.pagos.filter(p => p.cid === c.id);
+const suma = l => l.reduce((a, p) => a + p.importe, 0);
+const pagado = c => suma(pagosDe(c).filter(p => p.estado === 'pagado'));
+const pendiente = c => suma(pagosDe(c).filter(p => p.estado === 'pendiente'));
+const mesDe = (y, m) => `${y}-${String(m + 1).padStart(2, '0')}`;
+const ingresos = (y, m) => suma(S.pagos.filter(p => p.estado === 'pagado' && p.fecha.startsWith(mesDe(y, m))));
+function alertas(c) {
+  const a = [], p = CAT[c.plan];
+  if (c.estado === 'potencial') {
+    if (S.tareas.some(t => t.cid === c.id && t.estado === 'pendiente')) a.push(['', 'Tarea comercial pendiente']);
+    return a;
+  }
+  const d = sinEntrenar(c); if (d >= 14) a.push(['w', `${d} días sin entrenar`]);
+  if (p && p.tipo === 'Bono' && disp(c) <= 2) a.push(['w', disp(c) === 1 ? 'Queda 1 sesión' : `Quedan ${disp(c)} sesiones`]);
+  if (p && p.tipo !== 'Sesión suelta' && c.caduca) { const x = dias(c.caduca); if (x >= 0 && x <= 7) a.push(['', x ? `Renueva en ${x} días` : 'Renueva hoy']); }
+  if (pendiente(c) > 0) a.push(['r', `Pago pendiente ${eur(pendiente(c))}`]);
+  return a;
+}
+const seguimientos = () => S.clientes.map(c => ({ c, m: alertas(c) })).filter(x => x.m.length); // un cliente cuenta una sola vez
+const badges = m => m.map(([k, t]) => `<span class="bg ${k}">${t}</span>`).join('');
+const estBg = e => `<span class="bg ${e === 'activo' ? 'g' : e === 'inactivo' ? 'n' : ''}">${e[0].toUpperCase() + e.slice(1)}</span>`;
+
+// ---------- Iconos ----------
+const P = { panel: '<rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/>',
+  users: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6M16 4.7a3.5 3.5 0 0 1 0 6.6M18 14.6c2 .8 3.5 2.6 3.5 5.4"/>',
+  tareas: '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 9l2 2 3.5-3.5M8 16h8"/>', pagos: '<path d="M18 6.5A7 7 0 1 0 18 17.5M4 10h9M4 14h9"/>',
+  mapa: '<rect x="3" y="3" width="6" height="5" rx="1"/><rect x="15" y="3" width="6" height="5" rx="1"/><rect x="9" y="16" width="6" height="5" rx="1"/><path d="M6 8v3h12V8M12 11v5"/>',
+  logo: '<path d="M6 8v8M3 10v4M18 8v8M21 10v4M6 12h12"/>', plus: '<path d="M12 5v14M5 12h14"/>' };
+const ic = (n, s = 18) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${P[n]}</svg>`;
+
+// ---------- Formularios con validación ----------
+function field(f, v) {
+  const val = v ?? f.def ?? '', id = 'f_' + f.n;
+  if (f.t === 'checkbox') return `<label class="ck"><input type="checkbox" id="${id}" ${val ? 'checked' : ''}> ${f.l}</label>`;
+  let el;
+  if (f.t === 'select') el = `<select id="${id}">${f.o.map(([k, t]) => `<option value="${esc(k)}" ${String(k) === String(val) ? 'selected' : ''}>${esc(t)}</option>`).join('')}</select>`;
+  else if (f.t === 'textarea') el = `<textarea id="${id}" rows="3">${esc(val)}</textarea>`;
+  else el = `<input id="${id}" type="${f.t === 'tel' ? 'text' : f.t || 'text'}" ${f.t === 'number' ? 'step="any"' : ''} value="${esc(val)}" ${f.t === 'tel' ? 'inputmode="numeric"' : ''}>`;
+  return `<label>${f.l}${f.req ? ' *' : ''}${el}<span class="err" id="e_${f.n}"></span></label>`;
+}
+function form({ t, campos, v = {}, ok, btn = 'Guardar', check }) {
+  const d = $('#dlg');
+  d.innerHTML = `<form id="fm" novalidate><h3>${esc(t)}</h3>${campos.map(f => field(f, v[f.n])).join('')}<div class="acts"><button type="button" class="btn" data-act="cerrar">Cancelar</button><button class="btn pri">${btn}</button></div></form>`;
+  d.showModal ? d.showModal() : d.setAttribute('open', '');
+  $('#fm').onsubmit = e => {
+    e.preventDefault(); const o = {}, er = {};
+    campos.forEach(f => {
+      const el = $('#f_' + f.n), x = f.t === 'checkbox' ? el.checked : el.value.trim(); o[f.n] = x;
+      if (f.t === 'checkbox' || (!x && !f.req)) return;
+      if (!x) er[f.n] = 'Campo obligatorio';
+      else if (f.t === 'email' && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(x)) er[f.n] = 'Correo no válido';
+      else if (f.t === 'tel' && !/^\d{9}$/.test(x.replace(/\s/g, ''))) er[f.n] = 'Debe tener 9 dígitos';
+      else if (f.t === 'number' && (isNaN(+x) || +x < (f.min ?? 0))) er[f.n] = `Introduce un número ≥ ${f.min ?? 0}`;
+      else if (f.t === 'date' && isNaN(new Date(x))) er[f.n] = 'Fecha no válida';
+    });
+    if (!Object.keys(er).length && check) Object.assign(er, check(o));
+    campos.forEach(f => { const s = $('#e_' + f.n); if (s) s.textContent = er[f.n] || ''; });
+    if (Object.keys(er).length) return;
+    ok(o); save(); cerrar(); render();
+  };
+}
+const cerrar = () => { const d = $('#dlg'); d.close ? d.close() : d.removeAttribute('open'); };
+const optsCli = (solo) => [['', 'Selecciona un cliente'], ...S.clientes.filter(c => !solo || c.estado !== 'potencial').map(c => [c.id, nom(c)])];
+const optsPlan = [['', 'Sin servicio contratado'], ...Object.entries(CAT).map(([k, p]) => [k, `${p.n} · ${eur(p.p)}`])];
+
+function formCliente(c) {
+  form({ t: c ? 'Editar cliente' : 'Nuevo cliente', btn: c ? 'Guardar cambios' : 'Crear cliente',
+    v: c ? { ...c, disp: disp(c) } : { estado: 'potencial' },
+    campos: [{ n: 'nombre', l: 'Nombre', req: 1 }, { n: 'apellidos', l: 'Apellidos', req: 1 }, { n: 'tel', l: 'Teléfono (9 dígitos)', t: 'tel', req: 1 },
+      { n: 'email', l: 'Correo electrónico', t: 'email', req: 1 }, { n: 'estado', l: 'Estado', t: 'select', o: ESTADOS.map(e => [e, e[0].toUpperCase() + e.slice(1)]) },
+      { n: 'plan', l: 'Bono o plan contratado', t: 'select', o: optsPlan }, { n: 'disp', l: 'Sesiones disponibles (vacío = todas las del bono)', t: 'number' },
+      { n: 'caduca', l: 'Caducidad del bono / renovación del plan', t: 'date' }, { n: 'obs', l: 'Observaciones', t: 'textarea' }],
+    check: o => { const e = {}, p = CAT[o.plan];
+      if (o.estado === 'potencial' && o.plan) e.plan = 'Un cliente potencial aún no tiene servicio contratado';
+      if (p && p.tipo !== 'Sesión suelta' && !o.caduca) e.caduca = 'Indica la fecha de caducidad o renovación';
+      if (p && o.disp !== '' && +o.disp > p.ses) e.disp = `Como máximo ${p.ses} sesiones`;
+      if (!p && o.disp !== '') e.disp = 'Elige primero un bono o plan'; return e; },
+    ok: o => { const p = CAT[o.plan], total = p ? p.ses : 0, d = o.disp === '' ? total : +o.disp;
+      const datos = { nombre: o.nombre, apellidos: o.apellidos, tel: o.tel.replace(/\s/g, ''), email: o.email, estado: o.estado, plan: o.plan, total, usadas: total - d, caduca: p && p.tipo !== 'Sesión suelta' ? o.caduca : '', obs: o.obs };
+      if (c) Object.assign(c, datos); else { const n = { id: nid(), alta: iso(HOY), ...datos }; S.clientes.push(n); ui.sel = n.id; ui.tab = 'datos'; } } });
+}
+const formEntreno = c => form({ t: 'Registrar entrenamiento realizado', btn: 'Registrar', v: { fecha: iso(HOY) }, campos: [{ n: 'fecha', l: 'Fecha', t: 'date', req: 1 }],
+  check: o => o.fecha > iso(HOY) ? { fecha: 'No puede ser futura; usa "Programar sesión"' } : !c.plan ? { fecha: 'El cliente no tiene bono ni plan' } : disp(c) <= 0 ? { fecha: 'No quedan sesiones: renueva el bono o plan' } : {},
+  ok: o => { S.sesiones = S.sesiones.filter(s => !(s.cid === c.id && s.estado === 'programada' && s.fecha === o.fecha)); S.sesiones.push({ id: nid(), cid: c.id, fecha: o.fecha, estado: 'realizada' }); c.usadas++; if (c.estado === 'inactivo') c.estado = 'activo'; } });
+const formProgramar = c => form({ t: 'Programar sesión', btn: 'Programar', v: { fecha: off(1) }, campos: [{ n: 'fecha', l: 'Fecha', t: 'date', req: 1 }],
+  check: o => o.fecha < iso(HOY) ? { fecha: 'Debe ser hoy o una fecha futura' } : {}, ok: o => S.sesiones.push({ id: nid(), cid: c.id, fecha: o.fecha, estado: 'programada' }) });
+function formPago(c) {
+  const p = c && CAT[c.plan];
+  form({ t: 'Registrar pago', btn: 'Guardar pago', v: { concepto: p ? p.n : '', importe: p ? p.p : '', fecha: iso(HOY), estado: 'pagado' },
+    campos: [...(c ? [] : [{ n: 'cid', l: 'Cliente', t: 'select', o: optsCli(1), req: 1 }]), { n: 'concepto', l: 'Concepto', req: 1 }, { n: 'importe', l: 'Importe (€)', t: 'number', min: .01, req: 1 },
+      { n: 'fecha', l: 'Fecha', t: 'date', req: 1 }, { n: 'estado', l: 'Estado', t: 'select', o: [['pagado', 'Pagado'], ['pendiente', 'Pendiente de cobro']] }],
+    ok: o => S.pagos.push({ id: nid(), cid: c ? c.id : +o.cid, concepto: o.concepto, importe: +o.importe, fecha: o.fecha, estado: o.estado }) });
+}
+function formRenovar(c) {
+  const p = CAT[c.plan]; if (!p) return alert('Este cliente no tiene bono ni plan que renovar.');
+  form({ t: `Renovar: ${p.n}`, btn: 'Renovar', v: { caduca: off(p.tipo === 'Plan mensual' ? 30 : 90), pagado: true },
+    campos: [{ n: 'caduca', l: 'Nueva fecha de caducidad / renovación', t: 'date', req: p.tipo !== 'Sesión suelta' }, { n: 'pagado', l: `Cobrado (${eur(p.p)})`, t: 'checkbox' }],
+    check: o => o.caduca && o.caduca <= iso(HOY) ? { caduca: 'Debe ser posterior a hoy' } : {},
+    ok: o => { c.usadas = 0; c.total = p.ses; c.caduca = p.tipo === 'Sesión suelta' ? '' : o.caduca; c.estado = 'activo';
+      S.pagos.push({ id: nid(), cid: c.id, concepto: 'Renovación ' + p.n, importe: p.p, fecha: iso(HOY), estado: o.pagado ? 'pagado' : 'pendiente' });
+      S.eventos.push({ id: nid(), cid: c.id, fecha: iso(HOY), tipo: 'renovacion', texto: 'Renovación de ' + p.n.toLowerCase() }); } });
+}
+const formContacto = c => form({ t: 'Registrar contacto', btn: 'Guardar', v: { canal: 'WhatsApp' },
+  campos: [{ n: 'canal', l: 'Canal', t: 'select', o: ['WhatsApp', 'Llamada', 'Email', 'En persona'].map(x => [x, x]) }, { n: 'texto', l: 'Resumen de la conversación', t: 'textarea', req: 1 }],
+  ok: o => S.eventos.push({ id: nid(), cid: c.id, fecha: iso(HOY), tipo: 'contacto', texto: `${o.canal}: ${o.texto}` }) });
+const formNota = c => form({ t: 'Añadir observación', btn: 'Guardar', campos: [{ n: 'texto', l: 'Observación importante', t: 'textarea', req: 1 }],
+  ok: o => S.eventos.push({ id: nid(), cid: c.id, fecha: iso(HOY), tipo: 'obs', texto: o.texto }) });
+const formTarea = c => form({ t: 'Nueva tarea', btn: 'Crear tarea', v: { fecha: iso(HOY), cid: c ? c.id : '' },
+  campos: [...(c ? [] : [{ n: 'cid', l: 'Cliente relacionado', t: 'select', o: optsCli(), req: 1 }]), { n: 'desc', l: 'Descripción', req: 1 }, { n: 'fecha', l: 'Fecha', t: 'date', req: 1 }],
+  ok: o => S.tareas.push({ id: nid(), cid: c ? c.id : +o.cid, desc: o.desc, fecha: o.fecha, estado: 'pendiente' }) });
+
+// ---------- Acciones ----------
+const sel = () => C(ui.sel);
+const A = {
+  cerrar, nuevo: () => formCliente(), editar: () => formCliente(sel()), entreno: () => formEntreno(sel()), programar: () => formProgramar(sel()),
+  pago: () => formPago(sel()), pagoG: () => formPago(null), renovar: () => formRenovar(sel()), contacto: () => formContacto(sel()), nota: () => formNota(sel()),
+  tarea: () => formTarea(sel()), tareaG: () => formTarea(null),
+  borrar() { const c = sel(); if (!confirm(`¿Eliminar a ${nom(c)}? Se borrará también su historial.`)) return;
+    ['sesiones', 'pagos', 'eventos', 'tareas'].forEach(k => S[k] = S[k].filter(x => x.cid !== c.id)); S.clientes = S.clientes.filter(x => x !== c); ui.sel = null; save(); render(); },
+  sel: d => { ui.sel = +d.id; ui.tab = 'datos'; render(); const f = $('#ficha'); f && f.scrollIntoView && innerWidth < 860 && f.scrollIntoView({ behavior: 'smooth' }); },
+  ver: d => { ui.sel = +d.id; ui.tab = 'datos'; ui.q = ''; ui.f = 'todos'; location.hash = 'clientes'; },
+  tab: d => { ui.tab = d.v; render(); }, filtro: d => { ui.f = d.v; render(); }, pf: d => { ui.pf = d.v; render(); }, tf: d => { ui.tf = d.v; render(); },
+  pagar: d => { const p = S.pagos.find(x => x.id === +d.id); p.estado = 'pagado'; p.fecha = iso(HOY); save(); render(); },
+  tk: d => { const t = S.tareas.find(x => x.id === +d.id); t.estado = t.estado === 'pendiente' ? 'completada' : 'pendiente'; save(); render(); },
+  go: d => { location.hash = d.v; },
+  reset: () => { if (confirm('¿Restablecer los 20 clientes de demostración? Se perderán los cambios.')) { S = seedData(); ui.sel = null; save(); render(); } }
+};
+document.addEventListener('click', e => { const b = e.target.closest('[data-act]'); if (b && A[b.dataset.act]) { e.preventDefault(); A[b.dataset.act](b.dataset); } });
+document.addEventListener('input', e => { if (e.target.id === 'q') { ui.q = e.target.value; $('#tb').innerHTML = filas(); } });
+
+// ---------- Vistas ----------
+const V = {};
+const filtrados = () => S.clientes.filter(c => (ui.f === 'todos' || c.estado === ui.f) && norm(nom(c)).includes(norm(ui.q.trim())));
+function filas() {
+  const l = filtrados(); if (!l.length) return '<tr><td colspan="6" class="empty">Ningún cliente coincide con la búsqueda.</td></tr>';
+  return l.map(c => { const p = CAT[c.plan], pe = pendiente(c);
+    return `<tr data-act="sel" data-id="${c.id}" class="${c.id === ui.sel ? 'on' : ''}"><td>${esc(nom(c))}</td><td>${estBg(c.estado)}</td><td>${p ? p.n : '<span class="mu">—</span>'}</td>
+    <td>${p ? disp(c) + ' / ' + c.total : '—'}</td><td>${fmt(prox(c))}</td><td>${pe ? `<span class="bg r">${eur(pe)}</span>` : '—'}</td></tr>`; }).join('');
+}
+V.panel = () => {
+  const act = S.clientes.filter(c => c.estado === 'activo').length, sg = seguimientos(), m = [];
+  for (let i = 5; i >= 0; i--) { const d = new Date(HOY.getFullYear(), HOY.getMonth() - i, 1); m.push([d.toLocaleDateString('es-ES', { month: 'short' }).replace('.', ''), ingresos(d.getFullYear(), d.getMonth())]); }
+  const mx = Math.max(...m.map(x => x[1]), 1), mesNom = HOY.toLocaleDateString('es-ES', { month: 'long' });
+  return `<div class="hd"><div><h1>Panel</h1><span class="mu">Resumen del negocio</span></div><span class="mu sm">${HOY.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}</span></div>
+  <div class="g3"><button class="card kpi" data-act="go" data-v="clientes"><span>Clientes activos</span><b>${act}</b><span>de ${S.clientes.length} registrados</span></button>
+  <button class="card kpi" data-act="go" data-v="pagos"><span>Ingresos de ${mesNom}</span><b>${eur(ingresos(HOY.getFullYear(), HOY.getMonth()))}</b><span>cobrados este mes</span></button>
+  <button class="card kpi hl" data-act="go" data-v="tareas"><span>Seguimientos pendientes</span><b>${sg.length}</b><span>clientes que requieren acción</span></button></div>
+  <div class="g2"><div class="card"><h2>Ingresos por mes</h2><div class="bars">${m.map(x => `<div>${x[1] ? eur(x[1]) : ''}<i style="height:${Math.round(x[1] / mx * 100)}%"></i></div>`).join('')}</div><div class="lbl">${m.map(x => `<span>${x[0]}</span>`).join('')}</div></div>
+  <div class="card"><div class="row" style="border:0;padding-top:0"><h2 style="margin:0">Seguimientos pendientes</h2><button class="btn xs" data-act="go" data-v="tareas">Ver todos</button></div>
+  ${sg.length ? sg.slice(0, 6).map(x => `<div class="row"><a href="#" data-act="ver" data-id="${x.c.id}" style="color:inherit">${esc(nom(x.c))}</a><span style="text-align:right">${badges(x.m)}</span></div>`).join('') + (sg.length > 6 ? `<div class="mu sm" style="padding-top:8px">y ${sg.length - 6} más…</div>` : '') : '<div class="empty">Sin seguimientos pendientes.</div>'}</div></div>`;
+};
+function ficha() {
+  const c = sel(); if (!c) return '<div class="card empty" id="ficha">Selecciona un cliente para ver su ficha.</div>';
+  const p = CAT[c.plan], al = alertas(c), tab = ui.tab;
+  let body;
+  if (tab === 'datos') body = `<dl class="dl"><dt>Teléfono</dt><dd>${esc(c.tel)}</dd><dt>Correo</dt><dd>${esc(c.email)}</dd><dt>Fecha de alta</dt><dd>${fmt(c.alta)}</dd><dt>Estado</dt><dd>${estBg(c.estado)}</dd>
+    <dt>Servicio</dt><dd>${p ? p.tipo : '—'}</dd><dt>Bono o plan</dt><dd>${p ? p.n : 'Sin contratar'}</dd><dt>Sesiones disponibles</dt><dd>${p ? `${disp(c)} de ${c.total}` : '—'}</dd>
+    <dt>Caducidad / renovación</dt><dd>${fmt(c.caduca)}</dd><dt>Próxima sesión</dt><dd>${fmt(prox(c))}</dd><dt>Último entrenamiento</dt><dd>${fmt(ultima(c))}</dd>
+    <dt>Importe pagado</dt><dd>${eur(pagado(c))}</dd><dt>Importe pendiente</dt><dd>${pendiente(c) ? `<span class="bg r" style="margin:0">${eur(pendiente(c))}</span>` : eur(0)}</dd><dt>Observaciones</dt><dd>${esc(c.obs) || '—'}</dd></dl>`;
+  else if (tab === 'historial') {
+    const it = [...S.sesiones.filter(s => s.cid === c.id).map(s => [s.fecha, s.estado === 'realizada' ? 'Entrenamiento realizado' : 'Sesión programada']),
+      ...pagosDe(c).map(x => [x.fecha, `Pago de ${eur(x.importe)} (${x.estado}): ${esc(x.concepto)}`]),
+      ...S.eventos.filter(x => x.cid === c.id).map(x => [x.fecha, (x.tipo === 'renovacion' ? 'Renovación: ' : x.tipo === 'obs' ? 'Observación: ' : 'Contacto · ') + esc(x.texto)]),
+      ...S.tareas.filter(x => x.cid === c.id && x.estado === 'completada').map(x => [x.fecha, 'Tarea completada: ' + esc(x.desc)])].sort((a, b) => b[0].localeCompare(a[0]));
+    body = it.length ? `<ul class="tl">${it.map(x => `<li><span class="mu">${fmt(x[0])}</span> · ${x[1]}</li>`).join('')}</ul>` : '<div class="empty">Aún no hay actividad registrada.</div>';
+  } else { const l = pagosDe(c).sort((a, b) => b.fecha.localeCompare(a.fecha));
+    body = l.length ? l.map(x => `<div class="row"><span>${fmt(x.fecha)} · ${esc(x.concepto)}</span><span>${eur(x.importe)} ${x.estado === 'pagado' ? '<span class="bg g">Pagado</span>' : `<button class="btn xs" data-act="pagar" data-id="${x.id}">Marcar pagado</button>`}</span></div>`).join('') : '<div class="empty">Sin pagos registrados.</div>'; }
+  return `<div class="card" id="ficha"><div style="display:flex;gap:12px;align-items:center"><div class="av">${esc(c.nombre[0] + c.apellidos[0])}</div><div><h3 style="margin:0">${esc(nom(c))}</h3><span class="mu sm">Cliente ${c.estado} · alta ${fmt(c.alta)}</span></div></div>
+  ${al.length ? `<div style="margin-top:8px">${badges(al)}</div>` : ''}
+  <div class="ac"><button class="btn" data-act="editar">Editar</button><button class="btn" data-act="entreno">Registrar entreno</button><button class="btn" data-act="programar">Programar sesión</button><button class="btn" data-act="pago">Registrar pago</button>
+  <button class="btn" data-act="renovar">Renovar</button><button class="btn" data-act="contacto">Contacto</button><button class="btn" data-act="nota">Nota</button><button class="btn" data-act="tarea">Nueva tarea</button><button class="btn dan" data-act="borrar">Eliminar</button></div>
+  <div class="tabs">${[['datos', 'Datos'], ['historial', 'Historial'], ['pagos', 'Pagos']].map(([k, t]) => `<button data-act="tab" data-v="${k}" class="${tab === k ? 'on' : ''}">${t}</button>`).join('')}</div>${body}</div>`;
+}
+V.clientes = () => `<div class="hd"><div><h1>Clientes</h1><span class="mu">${S.clientes.length} clientes en total</span></div><button class="btn pri" data-act="nuevo">${ic('plus', 16)} Nuevo cliente</button></div>
+  <div class="tb"><input id="q" type="search" placeholder="Buscar por nombre o apellidos" value="${esc(ui.q)}" aria-label="Buscar cliente">${['todos', ...ESTADOS].map(e => `<button class="chip ${ui.f === e ? 'on' : ''}" data-act="filtro" data-v="${e}">${e === 'todos' ? 'Todos' : e[0].toUpperCase() + e.slice(1) + 's'} (${e === 'todos' ? S.clientes.length : S.clientes.filter(c => c.estado === e).length})</button>`).join('')}</div>
+  <div class="g2"><div class="card tw"><table><thead><tr><th>Nombre</th><th>Estado</th><th>Servicio</th><th>Sesiones</th><th>Próxima sesión</th><th>Pendiente</th></tr></thead><tbody id="tb">${filas()}</tbody></table></div>${ficha()}</div>`;
+V.tareas = () => {
+  const sg = seguimientos(), ts = S.tareas.filter(t => t.estado === ui.tf).sort((a, b) => a.fecha.localeCompare(b.fecha));
+  return `<div class="hd"><div><h1>Tareas y seguimientos</h1><span class="mu">${sg.length} clientes requieren seguimiento</span></div><button class="btn pri" data-act="tareaG">${ic('plus', 16)} Nueva tarea</button></div>
+  <div class="g2"><div class="card"><h2>Alertas automáticas</h2><p class="mu sm" style="margin-top:-6px">Sin entrenar 14+ días · bono con 2 sesiones o menos · renovación en 7 días · pago pendiente · potenciales con tarea comercial pendiente</p>
+  ${sg.map(x => `<div class="row"><a href="#" data-act="ver" data-id="${x.c.id}" style="color:inherit">${esc(nom(x.c))} ${estBg(x.c.estado)}</a><span style="text-align:right">${badges(x.m)}</span></div>`).join('') || '<div class="empty">Todo al día.</div>'}</div>
+  <div class="card"><h2>Mis tareas</h2><div class="tb">${[['pendiente', 'Pendientes'], ['completada', 'Completadas']].map(([k, t]) => `<button class="chip ${ui.tf === k ? 'on' : ''}" data-act="tf" data-v="${k}">${t} (${S.tareas.filter(x => x.estado === k).length})</button>`).join('')}</div>
+  ${ts.map(t => { const c = C(t.cid), late = t.estado === 'pendiente' && t.fecha < iso(HOY); return `<div class="tk"><input type="checkbox" data-act="tk" data-id="${t.id}" ${t.estado === 'completada' ? 'checked' : ''} aria-label="Completar tarea"><div><div class="${t.estado === 'completada' ? 'done' : ''}">${esc(t.desc)}</div><span class="mu sm">${c ? esc(nom(c)) : 'Cliente eliminado'} · ${fmt(t.fecha)}</span>${late ? ' <span class="bg r">Vencida</span>' : ''}</div></div>`; }).join('') || '<div class="empty">No hay tareas en esta lista.</div>'}</div></div>`;
+};
+V.pagos = () => {
+  const l = S.pagos.filter(p => ui.pf === 'todos' || p.estado === ui.pf).sort((a, b) => b.fecha.localeCompare(a.fecha)), pend = S.pagos.filter(p => p.estado === 'pendiente');
+  return `<div class="hd"><div><h1>Servicios y pagos</h1><span class="mu">Importes en euros</span></div><button class="btn pri" data-act="pagoG">${ic('plus', 16)} Registrar pago</button></div>
+  <div class="g3"><div class="card"><span class="mu">Cobrado este mes</span><b style="display:block;font-size:26px;font-weight:500">${eur(ingresos(HOY.getFullYear(), HOY.getMonth()))}</b></div>
+  <div class="card"><span class="mu">Pendiente de cobro</span><b style="display:block;font-size:26px;font-weight:500">${eur(suma(pend))}</b><span class="mu sm">${pend.length} pagos de ${new Set(pend.map(p => p.cid)).size} clientes</span></div></div>
+  <div class="card tw" style="margin-bottom:14px"><h2>Catálogo de servicios</h2><table><thead><tr><th>Servicio</th><th>Tipo</th><th>Sesiones</th><th>Precio</th><th>Clientes</th></tr></thead><tbody>${Object.entries(CAT).map(([k, p]) => `<tr><td>${p.n}</td><td>${p.tipo}</td><td>${p.ses}</td><td>${eur(p.p)}</td><td>${S.clientes.filter(c => c.plan === k).length}</td></tr>`).join('')}</tbody></table></div>
+  <div class="card tw"><div class="tb"><h2 style="margin:0 8px 0 0">Pagos</h2>${[['todos', 'Todos'], ['pagado', 'Pagados'], ['pendiente', 'Pendientes']].map(([k, t]) => `<button class="chip ${ui.pf === k ? 'on' : ''}" data-act="pf" data-v="${k}">${t}</button>`).join('')}</div>
+  <table><thead><tr><th>Fecha</th><th>Cliente</th><th>Concepto</th><th>Importe</th><th>Estado</th></tr></thead><tbody>${l.map(p => { const c = C(p.cid); return `<tr><td>${fmt(p.fecha)}</td><td>${c ? esc(nom(c)) : '—'}</td><td>${esc(p.concepto)}</td><td>${eur(p.importe)}</td><td>${p.estado === 'pagado' ? '<span class="bg g" style="margin:0">Pagado</span>' : `<button class="btn xs" data-act="pagar" data-id="${p.id}">Marcar pagado</button>`}</td></tr>`; }).join('') || '<tr><td colspan="5" class="empty">Sin pagos.</td></tr>'}</tbody></table></div>`;
+};
+const box = (x, y, t, s, k) => `<rect x="${x}" y="${y}" width="166" height="56" rx="9" fill="${k ? '#E1F5EE' : 'var(--card)'}" stroke="${k ? '#0F6E56' : 'var(--mu)'}" ${k ? '' : 'stroke-dasharray="5 4"'}/><text x="${x + 83}" y="${y + 24}" text-anchor="middle" font-size="14" font-weight="500" fill="${k ? '#085041' : 'var(--tx)'}">${t}</text><text x="${x + 83}" y="${y + 42}" text-anchor="middle" font-size="12" fill="${k ? '#085041' : 'var(--mu)'}">${s}</text>`;
+V.mapa = () => `<div class="hd"><div><h1>Mapa del sistema</h1><span class="mu">Cómo encaja el CRM en el negocio</span></div></div><div class="card"><svg viewBox="0 0 680 430" width="100%" role="img" aria-label="Mapa tecnológico: entradas, CRM central y salidas" font-family="inherit">
+  <defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M2 1L8 5L2 9" fill="none" stroke="var(--mu)" stroke-width="1.5"/></marker></defs>
+  <g font-size="12" fill="var(--mu)" text-anchor="middle"><text x="107" y="38">Entradas</text><text x="340" y="38">CRM central</text><text x="573" y="38">Salidas</text></g>
+  ${box(24, 60, 'Agenda online', 'Citas y reservas')}${box(24, 130, 'Formulario web', 'Clientes potenciales')}${box(24, 200, 'WhatsApp y email', 'Conversaciones')}${box(24, 270, 'Registro de pagos', 'Cobros y servicios')}
+  <rect x="250" y="55" width="180" height="280" rx="14" fill="var(--pale)" stroke="var(--blue)"/><g text-anchor="middle" fill="var(--tx)"><text x="340" y="84" font-size="15" font-weight="500">CoachCRM</text>
+  <g font-size="13"><text x="340" y="125">Datos de clientes</text><text x="340" y="165">Historial de sesiones</text><text x="340" y="205">Servicios y bonos</text><text x="340" y="245">Pagos</text><text x="340" y="285">Seguimientos y tareas</text></g></g>
+  ${box(490, 60, 'Facturación', 'Control de pagos')}${box(490, 130, 'Recordatorios', 'Avisos de sesiones', 1)}${box(490, 200, 'Renovaciones', 'Avisos de bono', 1)}${box(490, 270, 'Seguimiento', 'Clientes potenciales', 1)}
+  ${[88, 158, 228, 298].map(y => `<line x1="190" y1="${y}" x2="248" y2="${y}" stroke="var(--mu)" stroke-width="1.5" marker-end="url(#ar)"/><line x1="430" y1="${y}" x2="488" y2="${y}" stroke="var(--mu)" stroke-width="1.5" marker-end="url(#ar)"/>`).join('')}
+  <rect x="24" y="364" width="26" height="14" rx="3" fill="#E1F5EE" stroke="#0F6E56"/><text x="60" y="375" font-size="12" fill="var(--tx)">Funciona dentro de la app, simulado con los datos precargados (alertas en pantalla)</text>
+  <rect x="24" y="390" width="26" height="14" rx="3" fill="none" stroke="var(--mu)" stroke-dasharray="4 3"/><text x="60" y="401" font-size="12" fill="var(--tx)">Sistema externo relacionado: no hay conexión real en esta versión</text></svg></div>`;
+
+function render() {
+  const r = V[location.hash.slice(1)] ? location.hash.slice(1) : 'panel';
+  $('#nav').innerHTML = `<div class="logo"><div class="mk">${ic('logo', 20)}</div><div><b>CoachCRM</b><small>Entrenador personal</small></div></div>${[['panel', 'Panel'], ['clientes', 'Clientes'], ['tareas', 'Tareas'], ['pagos', 'Servicios y pagos'], ['mapa', 'Mapa del sistema']].map(([k, t]) => `<a href="#${k}" class="${k === r ? 'on' : ''}">${ic(k === 'clientes' ? 'users' : k)}<span>${t}</span></a>`).join('')}<div class="sp"></div><button data-act="reset">Restablecer datos de demo</button>`;
+  $('#main').innerHTML = V[r]();
+}
+window.addEventListener('hashchange', render); render();
+window.__crm = { get S() { return S; }, ui, alertas, seguimientos, ingresos, render };
+})();
+</script>
+</body>
+</html>
